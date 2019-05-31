@@ -10,6 +10,7 @@ import thunk from 'redux-thunk'
 import createHistory from 'history/createBrowserHistory'
 import rootReducer from './reducers'
 import { loadState, saveState } from './localstorage';
+import * as serviceWorker from './serviceWorker';
 
 export const history = createHistory()
 
@@ -63,3 +64,5 @@ render(
   </Provider>,
   target
 )
+
+serviceWorker.unregister();
