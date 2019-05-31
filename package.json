@@ -8,6 +8,7 @@
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "connected-react-router": "^6.4.0",
+    "d3-dsv": "^1.1.1",
     "history": "^4.9.0",
     "immutable": "^4.0.0-rc.12",
     "jquery": "^3.4.1",
@@ -20,7 +21,8 @@
     "redux": "^4.0.1",
     "redux-form": "^8.2.3",
     "redux-thunk": "^2.3.0",
-    "xml-js": "^1.6.11"
+    "xml-js": "^1.6.11",
+    "xml-to-json-promise": "0.0.3"
   },
   "scripts": {
     "start": "react-app-rewired start",

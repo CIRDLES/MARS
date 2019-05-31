@@ -7,6 +7,8 @@ import noRequireAuth from './components/higherOrderComponents/no_require_auth';
 import SignIn from './components/SignIn/SignIn';
 import SignOut from './components/SignOut/SignOut';
 import Details from './components/Details/Details'
+import Mapping_Container from './components/Mapping/Mapping_Container';
+import Upload_Container from './components/Upload/Upload_Container';
 
 import './app.css'
 class Header extends Component {
@@ -18,6 +20,9 @@ class Header extends Component {
         <ul className="nav">
             <li className="nav-item">
                 <Link className="nav-link" to="/details">Details</Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" to="/mapping">Mapping</Link>
             </li>
             <li className="nav-item">
                 <Link className="nav-link" to="/signout">Sign Out</Link>
@@ -51,6 +56,8 @@ class Header extends Component {
                 <Route path="/signin" component={noRequireAuth(SignIn)} />
                 <Route path="/signout" component={requireAuth(SignOut)} />
                 <Route path="/details" component={requireAuth(Details)} />
+                <Route path="/mapping" component={requireAuth(Mapping_Container)} />
+                <Route path="/upload" component={requireAuth(Upload_Container)}/>
 
             </main>
         </div>
