@@ -6,8 +6,9 @@ import requireAuth from './components/higherOrderComponents/require_auth';
 import noRequireAuth from './components/higherOrderComponents/no_require_auth';
 import SignIn from './components/SignIn/SignIn';
 import SignOut from './components/SignOut/SignOut';
+import Details from './components/Details/Details'
 
-
+import './app.css'
 class Header extends Component {
   navbarLinks() {
 
@@ -15,9 +16,12 @@ class Header extends Component {
     if (this.props.authenticated) {
       return(
         <ul className="nav">
-          <li className="nav-item">
-            <Link className="nav-link" to="/signout">Sign Out</Link>
-          </li>
+            <li className="nav-item">
+                <Link className="nav-link" to="/details">Details</Link>
+            </li>
+            <li className="nav-item">
+                <Link className="nav-link" to="/signout">Sign Out</Link>
+            </li>
         </ul>
  
       );
@@ -46,6 +50,8 @@ class Header extends Component {
                 <Route exact path="/" component={HomePage} />
                 <Route path="/signin" component={noRequireAuth(SignIn)} />
                 <Route path="/signout" component={requireAuth(SignOut)} />
+                <Route path="/details" component={requireAuth(Details)} />
+
             </main>
         </div>
      
