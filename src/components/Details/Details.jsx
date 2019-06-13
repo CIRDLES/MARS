@@ -130,10 +130,10 @@ class Detail extends Component {
        
       )
     } else {
-      console.log(this.state)
+      
       return (
         <div style={{ width: "100%", height: "100%" }}>
-          <div class="container">
+          <div className="container">
             <div id="left"></div>
 
             <div className="center">
@@ -160,8 +160,8 @@ class Detail extends Component {
                 <AgGridReact
                   onGridReady= {params => this.gridApi = params.api}
                   rowSelection="multiple"
-                  enableSorting={true}
-                  enableFilter={true}
+                  sortable={true}
+                  filter={true}
                   columnDefs={this.state.columnDefs}
                   rowData={this.state.rowData}>
                 </AgGridReact>

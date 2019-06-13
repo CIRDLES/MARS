@@ -116,8 +116,8 @@ class Upload extends Component{
                         <AgGridReact
                             onGridReady= {params => this.gridApi = params.api}
                             rowSelection="multiple"
-                            enableSorting={true}
-                            enableFilter={true}
+                            sortable={true}
+                            filter={true}
                             columnDefs={this.state.columnDefs}
                             rowData={this.state.rowData}>
                             <AgGridColumn headerName="Sample"></AgGridColumn>
