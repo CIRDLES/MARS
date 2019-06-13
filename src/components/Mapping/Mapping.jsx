@@ -38,7 +38,11 @@ class Mapping extends Component {
       if (this.props.mapFile && this.props.sourceFiles){
         return(
           <div>
-            <button type="button" className="submitButton" onClick={this.handleProceed}>Proceed to Mapped Data</button>
+            <button type="button" 
+            className="submitButton" 
+            onClick={this.handleProceed}>
+              Proceed to Mapped Data
+            </button>
           </div>
 
         )
@@ -48,10 +52,19 @@ class Mapping extends Component {
     return (
       <div className='upload'>
         <Panel name='Mapping Setup'>
-          <div className='text'>Select your Mapping File</div>
-          <input className="inputs" type='file' name='file' accept='.js' onChange={(e)=>this.onChangeSourceMap(e)}/>
-          <div className='text'>Select your Sample Files</div>
-          <input className="inputs" type='file' name='file' accept='.csv' multiple onChange={(e)=>this.onChangeSourceFiles(e)}/>
+          <div className='text'>
+            Select your Mapping File
+          </div>
+          <input className="inputs" 
+            type='file' name='file' 
+            accept='.js' onChange={(e)=>this.onChangeSourceMap(e)}/>
+          <div className='text'>
+            Select your Sample Files
+          </div>
+          <input 
+            className="inputs" 
+            type='file' name='file' 
+            accept='.csv' multiple onChange={(e)=>this.onChangeSourceFiles(e)}/>
           {displayProceed()}
         </Panel>
       </div>
@@ -60,15 +73,3 @@ class Mapping extends Component {
 }
 
 export default Mapping
-
-//File chooser -> can upload multiple same csv
-//Upload mapping file
-//Upload Button --> onClick we upload
-
-//for scripps, combine samples csvs into one object or file or something
-//map the user's samples to SESAR's specs according to the uploaded mapping file
-//convert the mapped samples to XML in SESAR's specs
-//POST request using SESAR's API
-//Redirect to a Success Page if successful
-
-//FACILITY_CODE, SHIP_CODE, PLATFORM, CRUISE, SAMPLE, DEVICE --> SCRIPPS DUPLICATES
