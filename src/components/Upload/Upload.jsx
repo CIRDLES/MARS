@@ -91,26 +91,42 @@ class Upload extends Component{
     if (this.props.loading === false){
         console.log(this.props)
         console.log(this.state)
+       
+
+       
         return(
-            <div className="ag-theme-balham"
-            style={{
-              height: '600px',
-              width: '90%' ,
-              margin: 'auto'
-            }}>
-                <AgGridReact
-                    rowSelection="single"
-                    enableSorting={true}
-                    enableFilter={true}
-                    columnDefs={this.state.columnDefs}
-                    rowData={this.state.rowData}>
-                    <AgGridColumn headerName="Sample"></AgGridColumn>
+        <div style={{ width: "100%", height: "100%" }}>
+            <div class="container">
+                <div id="left"></div>
+                <div clasName ="center">
+                    <div className="ag-theme-balham"
+                        style={{
+                        height: '600px',
+                        width: '90%' ,
+                        margin: 'auto'
+                        }}>
+                        <AgGridReact
+                            rowSelection="single"
+                            enableSorting={true}
+                            enableFilter={true}
+                            columnDefs={this.state.columnDefs}
+                            rowData={this.state.rowData}>
+                            <AgGridColumn headerName="Sample"></AgGridColumn>
+                        </AgGridReact>
+                        
+                        <div className="buttonDiv">
+                            <button type= "button" 
+                            className="btn btn-primary uploadButton" 
+                            onClick={this.handleOnUpload}>
+                                Upload
+                            </button>
+                        </div>
 
-                </AgGridReact>
-            
-                <button onClick={this.handleOnUpload}>Upload</button>
-
+                    </div>
+                </div>
+                <div id="right"></div>
             </div>
+        </div>
         )
     }else{
         console.log(this.props)

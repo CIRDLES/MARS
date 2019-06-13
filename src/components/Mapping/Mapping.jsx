@@ -38,7 +38,7 @@ class Mapping extends Component {
       if (this.props.mapFile && this.props.sourceFiles){
         return(
           <div>
-            <button onClick={this.handleProceed}>Proceed to Upload</button>
+            <button type="button" className="submitButton" onClick={this.handleProceed}>Proceed to Mapped Data</button>
           </div>
 
         )
@@ -49,9 +49,9 @@ class Mapping extends Component {
       <div className='upload'>
         <Panel name='Mapping Setup'>
           <div className='text'>Select your Mapping File</div>
-          <input type='file' name='file' accept='.js' onChange={(e)=>this.onChangeSourceMap(e)}/>
+          <input className="inputs" type='file' name='file' accept='.js' onChange={(e)=>this.onChangeSourceMap(e)}/>
           <div className='text'>Select your Sample Files</div>
-          <input type='file' name='file' accept='.csv' multiple onChange={(e)=>this.onChangeSourceFiles(e)}/>
+          <input className="inputs" type='file' name='file' accept='.csv' multiple onChange={(e)=>this.onChangeSourceFiles(e)}/>
           {displayProceed()}
         </Panel>
       </div>

@@ -6,6 +6,7 @@
   margin: auto;
   width: 60%;
   max-width: 572px;
+  margin-top: 10px;
 }
 
 .content {
@@ -14,7 +15,7 @@
 
 .text {
   display: block;
-  font-size: 1.25rem;
+  font-size: 16px;
   text-transform: uppercase;
   color: #545859;
   margin-top: 1.5em;
@@ -36,14 +37,17 @@
   font-weight: bold;
   border-radius: 10px;
   border: none;
-  background-color: #4CAF50;
+  background-color: #007BFF;
   color: white;
   padding: 20px 20px;
-  font-size: 1.75em;
-  text-transform: uppercase;;
+  font-size: 1em;
+  text-transform: uppercase;
+  margin-top: auto;
+  margin-bottom: 15px;
 }
 
-.submitButton:hover {
-  background-color: #3B9E40;
-  cursor: pointer;
+.inputs{
+  display: flex;
+  justify-content: center;
+  margin: auto;
 }

@@ -11,9 +11,11 @@
 }
 
 .header{
+  flex: auto;
   font-size: 80px;
-  margin:auto;
+  margin: auto;
   text-align: center;
+  border-radius: 25px;
 }
 
 .subtitle{

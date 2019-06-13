@@ -1,13 +1,14 @@
-.openProfile{
-  padding: 5px !important;
+.container{
+  margin-top: 2rem;
 }
-.outerDiv{
-     position: absolute;
-     margin: auto;
-     top: 0;
-     right: 0;
-     bottom: 0;
-     left: 0;
-     width: 200px;
-     height: 200px;
+.buttonGroup{
+  margin-top: 1em;
+  width: 70%;
+  font-size: 20px;
+}
+
+.buttonContainer{
+  margin: 0;
+  background-color: transparent;
+  text-align: center;
 }
