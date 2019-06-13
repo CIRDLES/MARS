@@ -70,9 +70,16 @@ class Upload extends Component{
 
             //create columnDefs based on the keys
             for (let i = 0; i < keys.length; i++){
-                columnDefs.push({
-                    headerName: keys[i], field: keys[i]
-                })
+                if (i === 0) {
+                    columnDefs.push({
+                        headerName: keys[i], field: keys[i], checkboxSelection: true
+                    })
+                }else {
+                    columnDefs.push({
+                        headerName: keys[i], field: keys[i]
+                    })
+                }
+                
             }
             this.setState({columnDefs})
        
@@ -107,7 +114,8 @@ class Upload extends Component{
                         margin: 'auto'
                         }}>
                         <AgGridReact
-                            rowSelection="single"
+                            onGridReady= {params => this.gridApi = params.api}
+                            rowSelection="multiple"
                             enableSorting={true}
                             enableFilter={true}
                             columnDefs={this.state.columnDefs}
