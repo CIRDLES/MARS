@@ -13,6 +13,9 @@ class Upload extends Component{
         }
      
         this.handleOnUpload = this.handleOnUpload.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
+      
+      
     }
 
     componentWillReceiveProps(nextProps){
@@ -92,6 +95,17 @@ class Upload extends Component{
         this.props.onUpload(this.props.mapFile, this.props.uploadSamples, this.props.user)
     }
 
+    handleDelete(e){
+        console.log(this.gridApi.getSelectedNodes())
+        let selectedSamples = this.gridApi.getSelectedNodes()
+        let remove = []
+        for (let i = 0; i < selectedSamples.length; i ++){
+            remove[i] = selectedSamples[i].id
+        } 
+        this.props.deleteSamples(remove)
+    }
+
+    
 
    render(){
 
@@ -106,7 +120,18 @@ class Upload extends Component{
             <div class="container">
                 <div id="left"></div>
 
-                <div clasName ="center">
+                <div className ="center">
+                    <div className="buttonContainer">
+                        <div 
+                        className="btn-group " 
+                        role="group">
+                            <button type="button" 
+                            className="btn btn-primary samples" 
+                            onClick={this.handleDelete}>
+                            Delete Selected Samples
+                            </button>
+                        </div>
+                    </div>
                     <div className="ag-theme-balham"
                         style={{
                         height: '600px',
@@ -114,10 +139,10 @@ class Upload extends Component{
                         margin: 'auto'
                         }}>
                         <AgGridReact
-                            onGridReady= {params => this.gridApi = params.api}
+                            onGridReady= {params =>  this.gridApi = params.api}
                             rowSelection="multiple"
-                            enableSorting={true}
-                            enableFilter={true}
+                            sortable={true}
+                            filter={true}
                             columnDefs={this.state.columnDefs}
                             rowData={this.state.rowData}>
                             <AgGridColumn headerName="Sample"></AgGridColumn>

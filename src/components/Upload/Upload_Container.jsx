@@ -20,8 +20,11 @@ function mapDistatchToProps(dispatch){
             worker.postMessage({type:'combine', sourceMap, uploadSamples})
             worker.onmessage = (e) => {
                 dispatch(actions.upload(user.username, user.password, user.usercode, e.data))
-        }
-      }
+            }
+        },
+
+        deleteSamples: (remove) => {dispatch(actions.deleteSamples(remove))}
+
     }
 }
 

@@ -7,14 +7,14 @@ import App from './App'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk'
-import createHistory from 'history/createBrowserHistory'
+import { createBrowserHistory } from 'history'
 import rootReducer from './reducers'
 import { loadState, saveState } from './localstorage';
 import * as serviceWorker from './serviceWorker';
 
 //tomcat web application manager
-// warfile in cirdleswebui
-export const history = createHistory()
+// warfile in cirdle
+export const history = createBrowserHistory()
 
 const persistedState = loadState();
 //const initialState = {}
@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
   )
 
 store.subscribe(() => {
-    console.log(store)
+    
     saveState({
         auth: store.getState().auth
     });
