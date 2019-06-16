@@ -9,3 +9,9 @@
   align-items: center;
 
 }
+
+.logout{
+  display: flex;
+  
+  margin-left: 2rem;
+}

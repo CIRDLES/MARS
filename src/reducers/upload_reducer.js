@@ -1,11 +1,32 @@
-import {UPLOAD_REQUEST, UPLOAD_SUCCESS, UPLOAD_FAILURE, INITIALIZE_SAMPLES} from '../actions/upload'
+import {UPLOAD_REQUEST, UPLOAD_SUCCESS, UPLOAD_FAILURE, INITIALIZE_SAMPLES, DELETE_REQUEST, DELETE_SUCCESS, DELETE_FAILURE} from '../actions/upload'
 
 export default function reducer(state = {}, action) {
   switch(action.type) {
     case INITIALIZE_SAMPLES:
         console.log("<==== Samples Ready ====>")
-       
         return {...state, samples: action.sampleArray, loading: false}
+    
+    case DELETE_REQUEST:
+        console.log("<==== Delete Requested ====>")
+        return {...state, loading: true}
+    case DELETE_SUCCESS:
+        let remove = action.remove
+        let samplesArray = state.samples
+        let shiftValue = 0
+        while(remove.length > 0){
+          let index = remove[0] + shiftValue
+          samplesArray.splice(index, 1)
+          shiftValue = shiftValue - 1
+          remove.shift()
+        }
+        
+
+        console.log("<==== Delete Succcessful ====>")
+        return {...state, samples: samplesArray, loading: false}
+    case DELETE_FAILURE:
+        console.log("<==== Delete Failure ====>")
+        return {...state, loading: false}
+    
     case UPLOAD_REQUEST:
         console.log("<==== Upload Requested ====>")
       return {...state, loading: true}

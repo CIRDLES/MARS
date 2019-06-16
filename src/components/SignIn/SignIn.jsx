@@ -61,7 +61,7 @@ class SignIn extends Component {
             />
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary btn-md login"
               >
                 Login
               </button>

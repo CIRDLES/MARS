@@ -3,16 +3,18 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-import App from './app'
+import App from './App'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk'
-import createHistory from 'history/createBrowserHistory'
+import { createBrowserHistory } from 'history'
 import rootReducer from './reducers'
 import { loadState, saveState } from './localstorage';
 import * as serviceWorker from './serviceWorker';
 
-export const history = createHistory()
+//tomcat web application manager
+// warfile in cirdle
+export const history = createBrowserHistory()
 
 const persistedState = loadState();
 //const initialState = {}
@@ -44,7 +46,7 @@ if (process.env.NODE_ENV === 'development') {
   )
 
 store.subscribe(() => {
-    console.log(store)
+    
     saveState({
         auth: store.getState().auth
     });

@@ -9,3 +9,10 @@
   align-items: center;
 
 }
+
+.login{
+  display: flex;
+  margin-top: 1rem;
+  flex: auto;
+
+}

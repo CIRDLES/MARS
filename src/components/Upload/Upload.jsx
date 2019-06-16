@@ -13,6 +13,9 @@ class Upload extends Component{
         }
      
         this.handleOnUpload = this.handleOnUpload.bind(this)
+        this.handleDelete = this.handleDelete.bind(this)
+      
+      
     }
 
     componentWillReceiveProps(nextProps){
@@ -70,9 +73,16 @@ class Upload extends Component{
 
             //create columnDefs based on the keys
             for (let i = 0; i < keys.length; i++){
-                columnDefs.push({
-                    headerName: keys[i], field: keys[i]
-                })
+                if (i === 0) {
+                    columnDefs.push({
+                        headerName: keys[i], field: keys[i], checkboxSelection: true
+                    })
+                }else {
+                    columnDefs.push({
+                        headerName: keys[i], field: keys[i]
+                    })
+                }
+                
             }
             this.setState({columnDefs})
        
@@ -85,39 +95,81 @@ class Upload extends Component{
         this.props.onUpload(this.props.mapFile, this.props.uploadSamples, this.props.user)
     }
 
+    handleDelete(e){
+        console.log(this.gridApi.getSelectedNodes())
+        let selectedSamples = this.gridApi.getSelectedNodes()
+        let remove = []
+        for (let i = 0; i < selectedSamples.length; i ++){
+            remove[i] = selectedSamples[i].id
+        } 
+        this.props.deleteSamples(remove)
+    }
+
+    
 
    render(){
 
     if (this.props.loading === false){
         console.log(this.props)
         console.log(this.state)
+       
+
+       
         return(
-            <div className="ag-theme-balham"
-            style={{
-              height: '600px',
-              width: '90%' ,
-              margin: 'auto'
-            }}>
-                <AgGridReact
-                    rowSelection="single"
-                    enableSorting={true}
-                    enableFilter={true}
-                    columnDefs={this.state.columnDefs}
-                    rowData={this.state.rowData}>
-                    <AgGridColumn headerName="Sample"></AgGridColumn>
+        <div style={{ width: "100%", height: "100%" }}>
+            <div class="container">
+                <div id="left"></div>
 
-                </AgGridReact>
-            
-                <button onClick={this.handleOnUpload}>Upload</button>
+                <div className ="center">
+                    <div className="buttonContainer">
+                        <div 
+                        className="btn-group " 
+                        role="group">
+                            <button type="button" 
+                            className="btn btn-primary samples" 
+                            onClick={this.handleDelete}>
+                            Delete Selected Samples
+                            </button>
+                        </div>
+                    </div>
+                    <div className="ag-theme-balham"
+                        style={{
+                        height: '600px',
+                        width: '90%' ,
+                        margin: 'auto'
+                        }}>
+                        <AgGridReact
+                            onGridReady= {params =>  this.gridApi = params.api}
+                            rowSelection="multiple"
+                            sortable={true}
+                            filter={true}
+                            columnDefs={this.state.columnDefs}
+                            rowData={this.state.rowData}>
+                            <AgGridColumn headerName="Sample"></AgGridColumn>
+                        </AgGridReact>
+                        
+                        <div className="buttonDiv">
+                            <button type= "button" 
+                            className="btn btn-primary uploadButton" 
+                            onClick={this.handleOnUpload}>
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
+                <div id="right"></div>
             </div>
+        </div>
         )
     }else{
         console.log(this.props)
         return(
             <div className="outerDiv">
                 <div className="d-flex justify-content-center">
-                     <div className="spinner-grow text-primary" style={{width: '6rem', height: '6rem'}} role="status">
+                     <div className="spinner-grow text-primary" 
+                     style={{width: '6rem', height: '6rem'}} 
+                     role="status">
                         <span className="sr-only">Loading...</span>
                     </div>
                 </div>

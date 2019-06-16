@@ -14,7 +14,7 @@ class SignOut extends Component {
     return(
       <div className="signout">
         <button
-          className="btn btn-danger"
+          className="btn btn-danger btn-lg logout"
           onClick={() => this.signOut()}>
           Sign Out
         </button>

@@ -28,7 +28,7 @@ export function signInAction({ username, password }, history) {
           password: password
         });
   
-        history.push('/signout');
+        history.push('/details');
       } catch(error) {
         console.log(error)
         dispatch({
