@@ -3,7 +3,7 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
-import App from './app'
+import App from './App'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { connectRouter, routerMiddleware } from 'connected-react-router'
 import thunk from 'redux-thunk'
@@ -12,6 +12,8 @@ import rootReducer from './reducers'
 import { loadState, saveState } from './localstorage';
 import * as serviceWorker from './serviceWorker';
 
+//tomcat web application manager
+// warfile in cirdleswebui
 export const history = createHistory()
 
 const persistedState = loadState();

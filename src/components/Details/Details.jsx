@@ -54,8 +54,12 @@ class Detail extends Component {
     const length = this.gridApi.getSelectedNodes().length
     for (var i = 0; i < length; i++){
       let igsn = this.gridApi.getSelectedNodes()[i].data.IGSN
-      window.open(`https://sesardev.geosamples.org/sample/igsn/${igsn}`)
+      this.openWindow(igsn)
     }
+  }
+
+  openWindow(igsn){
+    window.open(`https://sesardev.geosamples.org/sample/igsn/${igsn}`)
   }
 
   sendRequest(num){
@@ -116,7 +120,9 @@ class Detail extends Component {
       return (
         <div className="outerDiv">
           <div className="d-flex justify-content-center">
-            <div className="spinner-grow text-primary" style={{width: '6rem', height: '6rem'}} role="status">
+            <div className="spinner-grow text-primary" 
+              style={{width: '6rem', height: '6rem'}} 
+              role="status">
               <span className="sr-only">Loading...</span>
             </div>
           </div>
@@ -126,41 +132,65 @@ class Detail extends Component {
     } else {
       console.log(this.state)
       return (
-        <div>
-          <div
-            className="ag-theme-balham"
-            style={{
-              height: '600px',
-              width: '90%' ,
-              margin: 'auto'
-            }}
-          >
-            <button 
-              type="button" 
-              className="btn btn-primary btn-lg" 
-              onClick={this.handleOpenProfile}>
-              Open Sample Page
-            </button>
+        <div style={{ width: "100%", height: "100%" }}>
+          <div class="container">
+            <div id="left"></div>
 
+            <div className="center">
+              <div className="buttonContainer">
+                <div 
+                  className="btn-group " 
+                  role="group">
+                    <button type="button" 
+                      className="btn btn-primary samples" 
+                      onClick={this.handleOpenProfile}>
+                      View Webpage for Selected Samples
+                    </button>
+                </div>
+              </div>
 
-            <AgGridReact
-              onGridReady={ params => this.gridApi = params.api }
-              rowSelection="single"
-              enableSorting={true}
-              enableFilter={true}
-              columnDefs={this.state.columnDefs}
-              rowData={this.state.rowData}>
-            </AgGridReact>
-            <div className="btn-group" role="group" aria-label="details group">
-              <button type="button" className="btn btn-primary" onClick={this.handleClickPrev}>Previous</button>
-              <button type="button" className="btn btn-primary" onClick={this.handleClickNext}>Next</button>
+              <div
+                className="ag-theme-balham"
+                style={{
+                  height: '600px',
+                  width: '90%' ,
+                  margin: 'auto'
+                }}
+              >
+                <AgGridReact
+                  onGridReady= {params => this.gridApi = params.api}
+                  rowSelection="multiple"
+                  enableSorting={true}
+                  enableFilter={true}
+                  columnDefs={this.state.columnDefs}
+                  rowData={this.state.rowData}>
+                </AgGridReact>
+              </div>
+
+              <div className="pageLabel">
+                <div className="label">
+                  Page {this.state.page_no}
+                </div>
+              </div>
+
+              <div className="buttonContainer">
+                <div className="btn-group buttonGroup" role="group">
+                  <button type="button" 
+                    className="btn btn-primary" 
+                    onClick={this.handleClickPrev}>
+                      Previous
+                  </button>
+                  <button type="button" 
+                    className="btn btn-primary" 
+                    onClick={this.handleClickNext}>
+                      Next
+                  </button>
+                </div>
+              </div>
             </div>
-
-            <div>
-              Page {this.state.page_no}
-            </div>
-
           </div>
+
+          <div id="right"></div>
         </div>
       );
     }

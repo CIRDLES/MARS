@@ -8,3 +8,19 @@
     width: 200px;
     height: 200px;
 }
+.container{
+    margin-top: 2rem;
+  }
+
+.uploadButton{
+    margin-top: 2em;
+  
+    font-size: 20px;
+    width: 50%;
+}
+
+.buttonDiv {
+    margin: 0;
+    background-color: transparent;
+    text-align: center;
+}
