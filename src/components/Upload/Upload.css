@@ -24,3 +24,21 @@
     background-color: transparent;
     text-align: center;
 }
+
+.buttonGroup{
+    margin-top: .5em;
+    width: 70%;
+    font-size: 20px;
+  }
+  
+  .buttonContainer {
+    margin: 0;
+    background-color: transparent;
+    text-align: center;
+  }
+  
+  .samples{
+    width: 60%;
+    margin-bottom: 1em;
+    font-size: 20px;
+  }
