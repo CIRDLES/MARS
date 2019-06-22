@@ -7,9 +7,6 @@ export const INITIALIZE_SAMPLES = 'initialize_samples';
 export const UPLOAD_REQUEST = 'upload_request';
 export const UPLOAD_SUCCESS = 'upload_success';
 export const UPLOAD_FAILURE = 'upload_failure';
-export const DELETE_REQUEST = 'delete_request';
-export const DELETE_FAILURE = 'delete_failure';
-export const DELETE_SUCCESS = 'delete_success';
 
 export function initializeSamples(sampleArray){
   return {
@@ -18,58 +15,18 @@ export function initializeSamples(sampleArray){
   }
 }
 
-export function deleteRequest() {
-  return {
-    type: DELETE_REQUEST
-  }
-}
-
-export function deleteSuccess(remove) {
-  return {
-    type: DELETE_SUCCESS,
-    remove: remove
-  }
-}
-export function deleteFailure() {
-  return {
-    type: DELETE_FAILURE
-  }
-}
-
-export function deleteSamples(remove){
-  return async dispatch => {
-    try {
-      await dispatch(deleteRequest())
-
-      for (let i = 0; i < remove.length; i++){
-        remove[i] = parseInt(remove[i])
-      }
-      dispatch(deleteSuccess(remove))
-    } catch(error) {
-      dispatch(deleteFailure)
-    }
-  }
-  /*console.log("actions")
-  return {
-    type: DELETE_SAMPLES,
-    deleteArray: deleteArray
-  }*/
-}
-
-  
 export function uploadRequest() {
   return {
     type: UPLOAD_REQUEST
   }
 }
 
-
-
 // All samples uploaded correctly
-export function uploadSuccess(results) {
+export function uploadSuccess(results, selectedSamples) {
   return {
     type: UPLOAD_SUCCESS,
-    results
+    results,
+    selectedSamples
   }
 }
 
@@ -81,15 +38,20 @@ export function uploadFailure(error) {
   }
 }
 
-export function upload(username, password, usercode, samples) {
+export function upload(username, password, usercode, samples, selectedSamples) {
   return async dispatch => {
     try {
 
       //Start upload request
       dispatch(uploadRequest())
-
+      
+      let samplesToUpload = []
+      for (let i = 0; i < selectedSamples.length; i++){
+        let index = selectedSamples[i].id
+        samplesToUpload[i] = samples[index]
+      }
       //convert samples to xml scheme
-      let xmlSample = toXML(samples, usercode)
+      let xmlSample = toXML(samplesToUpload, usercode)
 
       //TODO: Validate each sample
       //create form data to use in the POST request
@@ -102,8 +64,8 @@ export function upload(username, password, usercode, samples) {
       const res = await axios.post('https://sesardev.geosamples.org/webservices/upload.php', formData)
 
       //convert the response data from xml to JSON
-      convert.xmlDataToJSON(res.data, {explicitArray: false}).then(json => {
-        dispatch(uploadSuccess(json.results.sample))
+      convert.xmlDataToJSON(res.data, {explicitArray: true}).then(json => {
+        dispatch(uploadSuccess(json.results.sample, selectedSamples))
       });
   } catch(error){
     console.log(error)

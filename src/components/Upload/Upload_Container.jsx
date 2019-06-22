@@ -15,16 +15,13 @@ function mapStateToProps(state) {
 
 function mapDistatchToProps(dispatch){
     return {
-        onUpload: (sourceMap, uploadSamples, user) => {
+        onUpload: (sourceMap, uploadSamples, user, selectedSamples) => {
             let worker = Worker()
             worker.postMessage({type:'combine', sourceMap, uploadSamples})
             worker.onmessage = (e) => {
-                dispatch(actions.upload(user.username, user.password, user.usercode, e.data))
+                dispatch(actions.upload(user.username, user.password, user.usercode, e.data, selectedSamples))
             }
-        },
-
-        deleteSamples: (remove) => {dispatch(actions.deleteSamples(remove))}
-
+        }
     }
 }
 

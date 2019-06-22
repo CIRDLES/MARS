@@ -9,13 +9,13 @@ class Upload extends Component{
         super(props);
         this.state={
             rowData: [],
-            columnDefs: []
+            columnDefs: [],
+            isRowSelectable: function(rowNode) {
+                return rowNode.data ? rowNode.data.igsn === "" && rowNode.data.latitude !== "" && rowNode.data.longitude !== "" : false;
+            }
         }
      
         this.handleOnUpload = this.handleOnUpload.bind(this)
-        this.handleDelete = this.handleDelete.bind(this)
-      
-      
     }
 
     componentWillReceiveProps(nextProps){
@@ -75,7 +75,7 @@ class Upload extends Component{
             for (let i = 0; i < keys.length; i++){
                 if (i === 0) {
                     columnDefs.push({
-                        headerName: keys[i], field: keys[i], checkboxSelection: true
+                        headerName: keys[i], field: keys[i], checkboxSelection: true,  headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true
                     })
                 }else {
                     columnDefs.push({
@@ -92,46 +92,22 @@ class Upload extends Component{
 
     handleOnUpload(e){
         e.preventDefault()
-        this.props.onUpload(this.props.mapFile, this.props.uploadSamples, this.props.user)
-    }
-
-    handleDelete(e){
-        console.log(this.gridApi.getSelectedNodes())
         let selectedSamples = this.gridApi.getSelectedNodes()
-        let remove = []
-        for (let i = 0; i < selectedSamples.length; i ++){
-            remove[i] = selectedSamples[i].id
-        } 
-        this.props.deleteSamples(remove)
+        if (selectedSamples.length > 0){
+            this.props.onUpload(this.props.mapFile, this.props.uploadSamples, this.props.user, selectedSamples)
+        }
     }
-
-    
 
    render(){
 
     if (this.props.loading === false){
-        console.log(this.props)
-        console.log(this.state)
-       
 
-       
         return(
         <div style={{ width: "100%", height: "100%" }}>
-            <div class="container">
+            <div className="container">
                 <div id="left"></div>
 
                 <div className ="center">
-                    <div className="buttonContainer">
-                        <div 
-                        className="btn-group " 
-                        role="group">
-                            <button type="button" 
-                            className="btn btn-primary samples" 
-                            onClick={this.handleDelete}>
-                            Delete Selected Samples
-                            </button>
-                        </div>
-                    </div>
                     <div className="ag-theme-balham"
                         style={{
                         height: '600px',
@@ -144,6 +120,7 @@ class Upload extends Component{
                             sortable={true}
                             filter={true}
                             columnDefs={this.state.columnDefs}
+                            isRowSelectable={this.state.isRowSelectable}
                             rowData={this.state.rowData}>
                             <AgGridColumn headerName="Sample"></AgGridColumn>
                         </AgGridReact>
@@ -163,7 +140,6 @@ class Upload extends Component{
         </div>
         )
     }else{
-        console.log(this.props)
         return(
             <div className="outerDiv">
                 <div className="d-flex justify-content-center">

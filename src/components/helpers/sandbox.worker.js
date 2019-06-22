@@ -154,8 +154,13 @@ const loadCSV = (files, map, logic, callback) => {
             let seen = {}
             samples[i] = samples[i].filter(field => seen.hasOwnProperty(field.originalKey) ? false : (seen[field.originalKey]) = true)
           }
+          for (let i = 0; i < samples.length; i++){
+             let igsn = [{originalKey: 'igsn', originalValue: '', key:'igsn', value:''}] //IGSN for each sample
+              samples[i] = igsn.concat(samples[i])
+          }
           callback(null, samples)
         }
+          
       }
       reader.readAsText(file)
     })(files[i]) // end closure
