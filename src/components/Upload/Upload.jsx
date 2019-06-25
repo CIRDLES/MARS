@@ -11,7 +11,10 @@ class Upload extends Component{
             rowData: [],
             columnDefs: [],
             isRowSelectable: function(rowNode) {
-                return rowNode.data ? rowNode.data.igsn === "" && rowNode.data.latitude !== "" && rowNode.data.longitude !== "" : false;
+                return rowNode.data ? 
+                rowNode.data.igsn === "" && 
+                rowNode.data.latitude !== "" && 
+                rowNode.data.longitude !== "" : false;
             }
         }
      
