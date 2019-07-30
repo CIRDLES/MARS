@@ -41,7 +41,7 @@ class Mapping extends Component {
             <button type="button" 
             className="submitButton" 
             onClick={this.handleProceed}>
-              Proceed to Mapped Data
+              Proceed to Data Mapping
             </button>
           </div>
 

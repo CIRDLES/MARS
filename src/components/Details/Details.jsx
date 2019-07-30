@@ -83,7 +83,7 @@ class Detail extends Component {
         axios
         .get(`https://sesardev.geosamples.org/webservices/display.php?igsn=${igsn}`)
         .then( response => {
-
+    
           //Grabbing each piece of information needed and updating state as needed.
           const sampleName = response.data.sample.name
           const latitudes = response.data.sample.latitude
