@@ -10,12 +10,16 @@ export default function reducer(state = {}, action) {
       return {...state, loading: true}
     case UPLOAD_SUCCESS:
       let results = action.results
+      console.log("results: ", results)
       let samples = state.samples
+      console.log("samples: ", samples)
       let selectedSamples = action.selectedSamples
+      console.log("selectedSamples: ", selectedSamples)
+
 
       //Add the IGSNs to each sample
       for(let i=0; i<results.length; i++) {
-        let index = selectedSamples[i].id
+        let index = selectedSamples[i]
         let igsn = {originalKey: '', originalValue: '', key:'igsn', value:results[i].igsn} //IGSN for each sample
         samples[index][0] = igsn //for each sample, the sample is equal to its previous version with IGSN added to the end
       }

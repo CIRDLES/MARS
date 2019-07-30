@@ -47,7 +47,7 @@ export function upload(username, password, usercode, samples, selectedSamples) {
       
       let samplesToUpload = []
       for (let i = 0; i < selectedSamples.length; i++){
-        let index = selectedSamples[i].id
+        let index = selectedSamples[i]
         samplesToUpload[i] = samples[index]
       }
       //convert samples to xml scheme

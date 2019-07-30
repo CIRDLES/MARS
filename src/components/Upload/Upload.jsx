@@ -1,141 +1,206 @@
 import React, { Component } from 'react';
-import {AgGridColumn, AgGridReact} from 'ag-grid-react';
-import 'ag-grid-community/dist/styles/ag-grid.css';
-import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import PropTypes from 'prop-types';
 import './Upload.css'
 
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import MUIDataTable from 'mui-datatables';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+import TableBody from '@material-ui/core/TableBody';
+import TableRow from "@material-ui/core/TableRow";
+import TableCell from "@material-ui/core/TableCell";
+import { withStyles, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+
+const styles = theme => ({
+    root: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+
+        overflowX: 'auto'
+      },
+    table: {
+        minWidth: '100%',
+        height: '2rem'
+    },
+    column: {
+        whiteSpace: "normal",
+        wordWrap: "break-word",
+        width: "25%"
+    } 
+})
+   
 class Upload extends Component{
     constructor(props){
         super(props);
+
         this.state={
             rowData: [],
             columnDefs: [],
-            isRowSelectable: function(rowNode) {
-                return rowNode.data ? 
-                rowNode.data.igsn === "" && 
-                rowNode.data.latitude !== "" && 
-                rowNode.data.longitude !== "" : false;
-            }
+            originalKeys: [],
+            uploadSamples: [],
+           
         }
-     
+
         this.handleOnUpload = this.handleOnUpload.bind(this)
     }
+    
 
     componentWillReceiveProps(nextProps){
         if(nextProps.uploadSamples !== this.props.uploadSamples | nextProps.loading !== this.props.loading){
-            var keys = []
+
+            var uploadSamples =nextProps.uploadSamples
+            var sesarKeys = new Set()
             var rowData = []
             var columnDefs = []
+            var originalKeys = []
 
-            //find all keys, if a mapped key doesn't exist used the original key
+            this.setState({uploadSamples})
+
             for (let i = 0; i < nextProps.uploadSamples.length; i++){
                 for (let j=0; j < nextProps.uploadSamples[i].length; j++){
-                   let sampleData = nextProps.uploadSamples[i]
-                   keys = [...new Set(sampleData.map(data => 
-                    {
-                        if (data.key !== undefined){
-                            return data.key
-                        }else{
+
+                    let sampleData = nextProps.uploadSamples[i]
+                    let dataRow = nextProps.uploadSamples[i][j]
+
+                    if (dataRow.key !== undefined){
+                        sesarKeys.add(dataRow.key)
+                    }
+
+                    originalKeys =  [...new Set(sampleData.map(data =>
+                        {
                             return data.originalKey
                         }
-                    }
                     ))]
                 }
+               
             }
+            sesarKeys = [...sesarKeys]
+            this.setState({originalKeys})
 
-            //get rowData for ag-grid component
+            //get rowData & return a value based on a key
             for (let i = 0; i < nextProps.uploadSamples.length; i++){
-                var value = {}
-                for(let j=0; j < keys.length; j++){
-                    var keyVal = keys[j]
+                var keyValue = {}
 
-                    /*return a value based on a key, 
-                        if a mapped key doesnt exist use the original key and original value*/
+                for(let j=0; j < sesarKeys.length; j++){
+                    var keyData = sesarKeys[j]
                     var data = nextProps.uploadSamples[i].filter(x => 
                         {
-                            if(x.key !== undefined){
-                                return x.key === keys[j]
-                            }else{
-                                return x.originalKey === keys[j]
-                            }
+                                return x.key === sesarKeys[j]
                         }).map(x => 
                             {
-                                if(x.value !== undefined){
                                     return x.value
-                                }else{
-                                    return x.originalValue
-                                }
                             })
-                    value[keyVal] = data[0]
-                    
+                    keyValue[keyData] = data[0] 
                 }
-               
-                rowData = [...rowData, value]
+
+                rowData = [...rowData, keyValue]
                 this.setState({rowData})
             }
 
             //create columnDefs based on the keys
-            for (let i = 0; i < keys.length; i++){
-                if (i === 0) {
-                    columnDefs.push({
-                        headerName: keys[i], field: keys[i], checkboxSelection: true,  headerCheckboxSelection: true, headerCheckboxSelectionFilteredOnly: true
-                    })
-                }else {
-                    columnDefs.push({
-                        headerName: keys[i], field: keys[i]
-                    })
-                }
-                
+            for (let i = 0; i < sesarKeys.length; i++){
+                columnDefs.push(sesarKeys[i])  
             }
             this.setState({columnDefs})
        
-
+            
         }
     }
 
-    handleOnUpload(e){
-        e.preventDefault()
-        let selectedSamples = this.gridApi.getSelectedNodes()
+    handleOnUpload(selectedRows){
+        //create an array of the indices of samples that were selected to be uploaded
+        let selectedSamples = []
+        for ( let i = 0; i < selectedRows.data.length; i++){
+            selectedSamples = [...selectedSamples, selectedRows.data[i].index]
+        }
+
         if (selectedSamples.length > 0){
             this.props.onUpload(this.props.mapFile, this.props.uploadSamples, this.props.user, selectedSamples)
         }
     }
-
+   
+     
    render(){
+    const {classes} = this.props;
+    var rows = this.state.uploadSamples
+
+    let theme = createMuiTheme({
+        overrides: {
+            MUIDataTableSelectCell: {
+                root: {
+                    backgroundColor: '#FFFF'
+                }
+            }
+        }
+    });
+    
+    const options = {
+        filter: true,
+        filterType: 'dropdown',
+        responsive: 'scroll',
+        expandableRows: true,
+        expandableRowsOnClick: true,
+        //allow rows with no igsn to be selected
+        isRowSelectable: (dataIndex) => {
+            return this.state.rowData[dataIndex].igsn === ""
+        },
+        customToolbarSelect: selectedRows => (
+            <div>
+                <Button variant="contained" color="primary" onClick={() => this.handleOnUpload(selectedRows)}>Upload</Button>
+            </div>
+            
+        ),
+        renderExpandableRow: (rowData, rowMeta) => {
+            const colSpan = rowData.length
+            const index = rowMeta.rowIndex
+            return (
+                <TableRow>
+                    <TableCell colSpan={colSpan}>
+                        <Paper className={classes.root}>
+                            <Table className={classes.table}>
+                                <TableHead>
+                                    <TableRow >
+                                            <TableCell>Original Field</TableCell>
+                                            <TableCell align="left">Original Value</TableCell>
+                                            <TableCell align="left">SESAR Field</TableCell>
+                                            <TableCell align="left">SEASAR Value</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {rows[index].map(row => (
+                                        <TableRow key={row.originalKey}>
+                                            <TableCell className={classes.column}>{row.originalKey}</TableCell>
+                                            <TableCell className={classes.column} align="left">{row.originalValue}</TableCell>
+                                            <TableCell className={classes.column} align="left">{row.key}</TableCell>
+                                            <TableCell className={classes.column} align="left">{row.value}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody> 
+                            </Table>
+                        </Paper>
+                    </TableCell>
+                </TableRow>
+            );
+        }
+    }
+
 
     if (this.props.loading === false){
-
         return(
         <div style={{ width: "100%", height: "100%" }}>
             <div className="container">
                 <div id="left"></div>
 
                 <div className ="center">
-                    <div className="ag-theme-balham"
-                        style={{
-                        height: '600px',
-                        width: '90%' ,
-                        margin: 'auto'
-                        }}>
-                        <AgGridReact
-                            onGridReady= {params =>  this.gridApi = params.api}
-                            rowSelection="multiple"
-                            sortable={true}
-                            filter={true}
-                            columnDefs={this.state.columnDefs}
-                            isRowSelectable={this.state.isRowSelectable}
-                            rowData={this.state.rowData}>
-                            <AgGridColumn headerName="Sample"></AgGridColumn>
-                        </AgGridReact>
-                        
-                        <div className="buttonDiv">
-                            <button type= "button" 
-                            className="btn btn-primary uploadButton" 
-                            onClick={this.handleOnUpload}>
-                                Upload
-                            </button>
-                        </div>
-                    </div>
+                    <MuiThemeProvider theme={theme}>
+                        <MUIDataTable
+                            title={"Sample Data"}
+                            data={this.state.rowData}
+                            columns={this.state.columnDefs}
+                            options={options}/>
+                    </MuiThemeProvider>   
                 </div>
 
                 <div id="right"></div>
@@ -158,5 +223,7 @@ class Upload extends Component{
         
     }
 }
-
-export default Upload
+Upload.propTypes = {
+    classes: PropTypes.object.isRequired
+};
+export default withStyles(styles)(Upload)
