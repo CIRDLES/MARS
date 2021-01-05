@@ -7,7 +7,7 @@
     "@material-ui/icons": "^4.2.1",
     "ag-grid-community": "^20.2.0",
     "ag-grid-react": "^20.2.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "connected-react-router": "^6.4.0",
     "d3-dsv": "^1.1.1",
